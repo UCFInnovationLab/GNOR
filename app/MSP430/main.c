@@ -35,6 +35,7 @@
 #include "servo.h"
 #include "imu.h"
 #include "led.h"
+#include "button.h"
 
 #define ACCEL_ON        (0x01)
 #define GYRO_ON         (0x02)
@@ -52,6 +53,8 @@ main() {
     unsigned long timestamp, next_time;
     unsigned char new_temp = 0;
     unsigned int servo_degrees=0;
+    double old_heading=0.0;
+    double heading_rate=0.0;
     
 #ifdef COMPASS_ENABLED
     unsigned char new_compass = 0;
@@ -90,22 +93,9 @@ main() {
             new_temp = 1;
         }
 
-        if (hal.motion_int_mode) {
-            /* Enable motion interrupt. */
-            mpu_lp_motion_interrupt(500, 1, 5);
-            /* Notify the MPL that contiguity was broken. */
-            inv_accel_was_turned_off();
-            inv_gyro_was_turned_off();
-            inv_compass_was_turned_off();
-            inv_quaternion_sensor_was_turned_off();
-            /* Wait for the MPU interrupt. */
-            while (!hal.new_gyro)
-                __bis_SR_register(LPM0_bits + GIE);
-            /* Restore the previous sensor configuration. */
-            mpu_lp_motion_interrupt(0, 0, 0);
-            hal.motion_int_mode = 0;
-        }
-
+        /*
+         * Go to sleep if we are watching sensors and the fifo is empty
+         */
         if (!hal.sensors || !hal.new_gyro) {
             /* Put the MSP430 to sleep until a timer interrupt or data ready
              * interrupt is detected.
@@ -114,17 +104,7 @@ main() {
             continue;
         }
 
-        if (hal.new_gyro && hal.lp_accel_mode) {
-            short accel_short[3];
-            long accel[3];
-            mpu_get_accel_reg(accel_short, &sensor_timestamp);
-            accel[0] = (long)accel_short[0];
-            accel[1] = (long)accel_short[1];
-            accel[2] = (long)accel_short[2];
-            inv_build_accel(accel, 0, sensor_timestamp);
-            new_data = 1;
-            hal.new_gyro = 0;
-        } else if (hal.new_gyro && hal.dmp_on) {
+        if (hal.new_gyro && hal.dmp_on) {
             short gyro[3], accel_short[3], sensors;
             unsigned char more;
             long accel[3], quat[4], temperature;
@@ -205,20 +185,25 @@ main() {
             if (inv_get_sensor_type_quat(data, &accuracy, (inv_time_t*)&timestamp)) {
                 if (inv_get_sensor_type_heading(data, &accuracy,(inv_time_t*)&timestamp)) {
                     double heading = data[0] * 1.0 / (double)((long)1<<16);
-                    MPL_LOGE("Heading: %lf\n", heading);
-                if (heading > 0.0 && heading < 10.0)
-                    P1OUT |= BIT0;
-                else
-                    P1OUT &= ~BIT0;
+                    heading_rate = heading - old_heading;
+                    old_heading = heading;
+                    MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
+
+                    if (fabs(delta_angle(heading, 0)) < 5.0) {
+                    	set_led1(1);
+                    } else {
+                    	set_led1(0);
+                    }
                 }
             }
         }
+
 
         blink_sensorhub_led();
         if (timestamp>next_time) {
 
         	servo_degrees = (servo_degrees + 10) % 180;
-        	servo_move_to_degree(servo_degrees);
+        	servo2_move_to_angle(servo_degrees);
         	//MPL_LOGE("Timestamp %ld\n", timestamp);
         	next_time += 1000;
         }

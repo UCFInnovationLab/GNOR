@@ -22,6 +22,10 @@ struct hal_s {
     struct rx_s rx;
 };
 
-#define COMPASS_ENABLED 1
+double delta_angle(double, double);
+void run_self_test();
+void save_calibration_data_to_flash();
+
+//#define COMPASS_ENABLED
 
 #endif /* IMU_H_ */

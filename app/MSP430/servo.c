@@ -19,7 +19,7 @@
 
 #define MCU_CLOCK			12000000
 #define MCU_CLOCK_DIV		8
-#define SERVO_CLOCK			1500000
+#define SERVO_CLOCK			1500000 // MCU_CLOCK / MCU_CLOCK_DIV
 #define PWM_FREQUENCY		50		// In Hertz, ideally 50Hz.
 #define TIMER_PERIOD 		30000	// SERVO_CLOCK/PWM_FREQUENCY
 
@@ -83,17 +83,29 @@ void Timer_A_change_duty_cycle(uint16_t baseAddress,
     HWREG16(baseAddress + compareRegister + OFS_TAxR) = duty_cycle;
 }
 
-void servo_move_to_degree(int degree) {
+void servo1_move_to_angle(int angle) {
 
 	int pulse_width;
 
 	// make sure we are within 0-180 degrees
-	if (degree>180) degree = 180;
-	if (degree<0) degree = 0;
+	if (angle>180) angle = 180;
+	if (angle<0) angle = 0;
 
-	pulse_width = servo_lut[degree];
+	pulse_width = servo_lut[angle];
 
 	Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_1,pulse_width);
+}
+
+void servo2_move_to_angle(int angle) {
+
+	int pulse_width;
+
+	// make sure we are within 0-180 degrees
+	if (angle>180) angle = 180;
+	if (angle<0) angle = 0;
+
+	pulse_width = servo_lut[angle];
+
 	Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_2,pulse_width);
 }
 
