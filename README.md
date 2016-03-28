@@ -1,8 +1,8 @@
 # GNOR
 
-Code Composer Studio in the **Cloud** - https://dev.ti.com/ide
+Code Composer Studio in the *Cloud* - https://dev.ti.com/ide
 
-## MSP430f5529 LaunchPad pin descriptions
+##### MSP430f5529 LaunchPad pin descriptions
 * P1.0 - LED1 LaunchPad (GND reference)
 * P1.1 - Button2 LaunchPad (GND - no pullup)
 * P1.2 - Timer Capture (TA0.1)
