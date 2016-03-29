@@ -22,7 +22,7 @@ struct hal_s {
     struct rx_s rx;
 };
 
-double delta_angle(double, double);
+int calculateDifferenceBetweenAngles(int angle1, int angle2);
 void run_self_test();
 void save_calibration_data_to_flash();
 

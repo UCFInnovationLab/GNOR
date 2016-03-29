@@ -185,11 +185,10 @@ main() {
             if (inv_get_sensor_type_quat(data, &accuracy, (inv_time_t*)&timestamp)) {
                 if (inv_get_sensor_type_heading(data, &accuracy,(inv_time_t*)&timestamp)) {
                     double heading = data[0] * 1.0 / (double)((long)1<<16);
-                    heading_rate = heading - old_heading;
-                    old_heading = heading;
-                    MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
 
-                    if (fabs(delta_angle(heading, 0)) < 5.0) {
+                    MPL_LOGE("Heading: %lf, %lf, %d\n", heading, heading_rate);
+
+                    if (abs(calculateDifferenceBetweenAngles(heading, 0)) < 5) {
                     	set_led1(1);
                     } else {
                     	set_led1(0);
@@ -200,13 +199,14 @@ main() {
 
 
         blink_sensorhub_led();
-        if (timestamp>next_time) {
 
-        	servo_degrees = (servo_degrees + 10) % 180;
-        	servo2_move_to_angle(servo_degrees);
-        	//MPL_LOGE("Timestamp %ld\n", timestamp);
-        	next_time += 1000;
-        }
+//        if (timestamp>next_time) {
+//
+//        	servo_degrees = (servo_degrees + 10) % 180;
+//        	servo2_move_to_angle(servo_degrees);
+//        	//MPL_LOGE("Timestamp %ld\n", timestamp);
+//        	next_time += 1000;
+//        }
 
     }	// while
 }
