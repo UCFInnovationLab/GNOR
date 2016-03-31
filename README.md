@@ -5,8 +5,24 @@ The Great Navel Orange Race (GNOR) is an annual competition held at UCF every ye
 The TI Innovation lab is providing students with TI microcontroller boards (MSP430f5529) and sensors (TI Sensor Hub) for use in their watercrafts. These components empower students to control servos, provide signals for high power relays and ESCs, measure angle change relative to starting angle, look at accelerometer data, and more.
 This repository provides everything needed to get started using these components. This includes example code, pinouts, and more. If you have any questions or are having trouble getting started, you can find help at the UCF Innovation Lab in ENGII room 112 10AM-10PM M-F and Saturday 10-5. 
 
+#####Boat Kit
+The boat kit that we are providing includes the following:
+* 1x TI MSP430f5529 Microcontroller Board
+* 1x TI BoostXL Sensor Hub
+* 1x Servo Motor
+
 #####Code Composer Studio in the *Cloud* 
 * Go to: https://dev.ti.com/ide and register an account.
+* Accept Terms and start Code Composer Cloud
+* Go to the Git dop down, select clone  a repo and enter "https://github.com/UCFInnovationLab/GNOR"
+* To download repo, click the run button (install webplugins if prompted and update board flash if needed)
+* Next click on target, and select the COM port connection
+* Now, clicking on the serial button at the bottom left should show current heading info
+* The main program loop is located in app/msp430/main.c
+* The heading is being printed by the last lines in main.c and libraries to read buttons, activate LED's, and other functions are located in the other directories.
+* There is also some comented out example code to give you a head start with controling your servo based on the angle
+
+##### Code Composer *Local*
 * Go to http://www.ti.com/tool/ccstudio and download CCS latest version
 * Install on your device
 
