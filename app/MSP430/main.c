@@ -36,6 +36,7 @@
 #include "imu.h"
 #include "led.h"
 #include "button.h"
+#include "boat.h"
 
 #define ACCEL_ON        (0x01)
 #define GYRO_ON         (0x02)
@@ -50,11 +51,8 @@ void init_imu();
 extern void read_from_mpl();
 
 main() {
-    unsigned long timestamp, next_time;
+    unsigned long timestamp;
     unsigned char new_temp = 0;
-    unsigned int servo_degrees=0;
-    double old_heading=0.0;
-    double heading_rate=0.0;
     
 #ifdef COMPASS_ENABLED
     unsigned char new_compass = 0;
@@ -64,7 +62,7 @@ main() {
     init_imu();
 
     msp430_get_clock_ms(&timestamp);
-    next_time = timestamp+1000;
+
 
     MPL_LOGE("Starting Program.\n");
     
@@ -185,25 +183,9 @@ main() {
             if (inv_get_sensor_type_quat(data, &accuracy, (inv_time_t*)&timestamp)) {
                 if (inv_get_sensor_type_heading(data, &accuracy,(inv_time_t*)&timestamp)) {
                     double heading = data[0] * 1.0 / (double)((long)1<<16);
-                    heading_rate = heading - old_heading;
-                    old_heading = heading;
 
-                    MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
+                    boat_loop(timestamp, heading);
 
-                    // Turn on LED if heading +- 5 degrees of 0
-                    if (abs(calculateDifferenceBetweenAngles(heading, 0)) < 5.0) {
-                    	set_led1(1);
-                    } else {
-                    	set_led1(0);
-                    }
-
-                    if (timestamp>next_time) {
-
-                    	servo_degrees = (servo_degrees + 10) % 180;
-                        servo1_move_to_angle(servo_degrees);
-                        //MPL_LOGE("Timestamp %ld\n", timestamp);
-                        next_time += 1000;
-                    }
                 }
             }
         }

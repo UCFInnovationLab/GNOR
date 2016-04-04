@@ -102,27 +102,6 @@ static inline void msp430_reset(void)
     PMMCTL0 |= PMMSWPOR;
 }
 
-/*
- * Return the difference between two angles in a 0-360 system
- */
-int calculateDifferenceBetweenAngles(int angle1, int angle2) {
-	int delta;
-
-	delta = (angle1 - angle2 + 360) % 360;
-	if (delta > 180) delta = delta - 360;
-
-//	private double calculateDifferenceBetweenAngles(double firstAngle, double secondAngle)
-//	  {
-//	        double difference = secondAngle - firstAngle;
-//	        while (difference < -180) difference += 360;
-//	        while (difference > 180) difference -= 360;
-//	        return difference;
-//	 }
-
-//	if(angle1 > angle2) delta = 360 - angle2 - angle1;
-//	else delta = angle2 - angle1;
-	return delta;
-}
 
 /* Every time new gyro data is available, this function is called in an
  * ISR context. In this example, it sets a flag protecting the FIFO read
