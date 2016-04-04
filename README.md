@@ -6,10 +6,12 @@ The TI Innovation lab is providing students with TI microcontroller boards (MSP4
 This repository provides everything needed to get started using these components. This includes example code, pinouts, and more. If you have any questions or are having trouble getting started, you can find help at the UCF Innovation Lab in ENGII room 112 10AM-10PM M-F and Saturday 10-5. 
 
 #####Boat Kit
+![alt tag](https://github.com/UCFInnovationLab/GNOR/blob/master/GNOR%20Kit.jpg)
 The boat kit that we are providing includes the following:
 * 1x TI MSP430f5529 Microcontroller Board
 * 1x TI BoostXL Sensor Hub
 * 1x Servo Motor
+* 1x Adapter Board
 
 #####Code Composer Studio in the *Cloud* 
 * Go to: https://dev.ti.com/ide and register an account.
