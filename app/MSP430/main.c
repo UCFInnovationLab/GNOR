@@ -190,11 +190,6 @@ main() {
             }
         }
 
-
-        blink_sensorhub_led();
-
-
-
     }	// while
 }
 
