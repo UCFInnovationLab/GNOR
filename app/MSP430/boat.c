@@ -12,40 +12,60 @@
 
 void boat_loop(unsigned long timestamp, double heading) {
 
-       static double old_heading=0.0;
-      static unsigned long next_time = 0;
-      static int servo_degrees=0;
-        static unsigned long start_time;
-       static int start=0;
- 
-  unsigned long running_time;
+    static double old_heading=0.0;
+    static unsigned long next_time = 0;
+    static int servo_degrees=0;
+    static unsigned long start_time;
+    static int start=0;
+    static double heading_zero;
     
-     double P = 1.0;
-     int target = 0;
-     int error = 0;
-      int rudder = 0;
-      double heading_rate;
+    unsigned long running_time;
+    
+    double P = 1.0;
+    int target = 0;
+    int error = 0;
+    int rudder = 0;
+    
+    double heading_rate;
 
-
-    if ((abs(calculateDifferenceBetweenAngles(heading, 270)) < 5.0) && (start==0)) {
+    heading_rate = heading - old_heading;
+    old_heading = heading;
+    
+    // Reset heading if button 1 is pressed
+    //
+    if (launchpad_button_1_pressed() == 1) {
+        heading_zero = heading;
+    }
+    
+    heading = heading - heading_zero;
+    if (heading > 180) 
+        heading = heading - 360;
+    else if (heading < 0.0)
+        heading = heading + 360;
+    
+    if (fabs(heading_rate) < .005) 
+        set_led2(1);
+    else
+        set_led2(0);
+        
+    if ((abs(calculateDifferenceBetweenAngles(heading, 90)) < 5.0) && (start==0)) {
         start = 1;
         start_time = timestamp;
     }
 
     if (start==1) 
-        set_led2(1);
+        set_sensorhub_led(1);
     else
-        set_led2(0);
+        blink_sensorhub_led();
         
     if (start==1) {
         running_time = timestamp - start_time;
         if (running_time < 20000) 
-            target = 270;
+            target = 0;
         else if ((running_time > 20000) && (running_time < 40000))
-            target = 180;
+            target = 270;
         else if (running_time > 40000)
-            target = 90;
-        
+            target = 180;
         
         
         error = calculateDifferenceBetweenAngles(heading, target);
@@ -54,20 +74,18 @@ void boat_loop(unsigned long timestamp, double heading) {
         if (rudder > 90) rudder  = 90;
         if (rudder < -90) rudder = -90;
         servo1_move_to_angle(90 - rudder);
+        
+
     
-     heading_rate = heading - old_heading;
-          old_heading = heading;
-    
-           //MPL_LOGE("Heading: %lf, %lf, %d, %d\n", heading, heading_rate, rudder, error);
-    
+        //MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
       
     }
     
     // Turn on LED if heading +- 5 degrees of 0
-      if (abs(calculateDifferenceBetweenAngles(heading, 0)) < 5.0) {
-           set_led1(1);
+      if (abs(calculateDifferenceBetweenAngles(heading, target)) < 5.0) {
+            set_led1(1);
         } else {
-             set_led1(0);
+            set_led1(0);
     }
 
 }
