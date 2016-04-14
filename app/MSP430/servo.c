@@ -23,7 +23,7 @@
 #define PWM_FREQUENCY		50		// In Hertz, ideally 50Hz.
 #define TIMER_PERIOD 		30000	// SERVO_CLOCK/PWM_FREQUENCY
 
-#define SERVO_STEPS			180		// Maximum amount of steps in degrees (180 is common)
+#define SERVO_STEPS			181		// Maximum amount of steps in degrees (180 is common)
 #define SERVO_MIN			1200	// The minimum duty cycle (800us / 1000000) / (1/1500000)
 #define SERVO_MAX			3300	// The maximum duty cycle (2200us / 1000000) / (1/1500000)
 
