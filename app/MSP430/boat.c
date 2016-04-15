@@ -61,12 +61,7 @@ void boat_loop(unsigned long timestamp, double heading) {
     else if (heading < 0.0)
         heading = heading + 360;
 
-    // Turn on LED if heading +- 5 degrees of 0
-    if (abs(calculateDifferenceBetweenAngles(heading, target)) < 5.0) {
-		set_led1(1);
-	} else {
-		set_led1(0);
-    }
+
     
     // check for boat start.
     if ((abs(calculateDifferenceBetweenAngles(heading, 90)) < 5.0) && (start==0)) {
@@ -117,6 +112,12 @@ void boat_loop(unsigned long timestamp, double heading) {
       
     }
 
+    // Turn on LED if heading +- 5 degrees of 0
+    if (abs(calculateDifferenceBetweenAngles(heading, target)) < 5.0) {
+		set_led1(1);
+	} else {
+		set_led1(0);
+    }
 
 }
 
