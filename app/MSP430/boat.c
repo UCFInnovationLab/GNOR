@@ -26,7 +26,7 @@ void boat_loop(unsigned long timestamp, double heading) {
     
     unsigned long running_time;				// elapsed time since the mission started
     
-    double P = 1.0;							// P constant from the PID algorithm
+    double P = 2.0;							// P constant from the PID algorithm
     double I = 0.01;						// I constant from the PID algorithm
     int target = 0;							// Current heading target that the boat should seek
     int error = 0;							// error between current heading and target heading
@@ -61,12 +61,11 @@ void boat_loop(unsigned long timestamp, double heading) {
     else if (heading < 0.0)
         heading = heading + 360;
 
-
-    
     // check for boat start.
     if ((abs(calculateDifferenceBetweenAngles(heading, 90)) < 5.0) && (start==0)) {
         start = 1;
         start_time = timestamp;
+        servo2_move_to_angle(130);
     }
 
     // handle orange running LED
@@ -74,8 +73,10 @@ void boat_loop(unsigned long timestamp, double heading) {
     // solid: boat is being controlled by program
     if (start==1) 
         set_sensorhub_led(1);
-    else
+    else {
         blink_sensorhub_led();
+        servo2_move_to_angle(0);
+    }
 
     //--------------------------------------------------------------------------------
     // Main routine that runs after boat has started
@@ -84,12 +85,12 @@ void boat_loop(unsigned long timestamp, double heading) {
         running_time = timestamp - start_time;			// calculate elapsed time
         
         // place timed events here
-        if (running_time < 20000) 
+        if (running_time < 27000)
             target = 0;
-        else if ((running_time > 20000) && (running_time < 40000))
-            target = 270;
-        else if (running_time > 40000)
-            target = 180;
+        else if ((running_time > 27000) && (running_time < 36000))
+            target = 360-65;
+        else if (running_time > 36000)
+            target = 295-80;
         
         // PID routine
         // bigger P causes boat to more reaction in if there is heading errors
@@ -101,7 +102,7 @@ void boat_loop(unsigned long timestamp, double heading) {
         if (rudder < -90) rudder = -90;
 
         // set servo angles in response to PID
-        servo1_move_to_angle(90 - rudder);
+        servo1_move_to_angle(90 + rudder);
         
 
         // Log debugging information
