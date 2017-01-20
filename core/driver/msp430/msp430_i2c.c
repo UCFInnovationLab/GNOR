@@ -209,6 +209,48 @@ int msp430_i2c_write(unsigned char slave_addr,
     return 0;
 }
 
+int msp430_i2c_pressurewrite(unsigned char slave_addr,
+                     unsigned char reg_addr,
+                     unsigned char length,
+                     unsigned char const *data)
+{
+    unsigned long start, cur;
+    if (!i2c.enabled)
+        return -1;
+    if (!length)
+        return 0;
+
+    /* Populate struct. */
+    i2c.state = STATE_WRITING;
+    i2c.slave_reg = reg_addr;
+    i2c.slave_reg_written = 0;
+    i2c.data = (unsigned char*)data;
+    i2c.length = length;
+
+    I2CSA = slave_addr;
+    CTL1 |= UCTR | UCTXSTT;
+
+    msp430_get_clock_ms(&start);
+    while (i2c.state != STATE_WAITING) {
+        __bis_SR_register(LPM0_bits + GIE);
+        msp430_get_clock_ms(&cur);
+        if (cur >= (start + I2C_TIMEOUT_MS)) {
+            CTL1 |= UCTXSTP;
+            i2c.state = STATE_WAITING;
+            msp430_i2c_disable();
+            msp430_delay_ms(1);
+            CLEAR_SCL();
+            CLEAR_SDA();
+            msp430_delay_ms(1);
+            SET_SCL();
+            SET_SDA();
+            msp430_i2c_enable();
+            return -1;
+        }
+    }
+    return 0;
+}
+
 int msp430_i2c_read(unsigned char slave_addr,
                     unsigned char reg_addr,
                     unsigned char length,
