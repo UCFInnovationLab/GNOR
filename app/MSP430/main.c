@@ -89,7 +89,8 @@ main() {
     unsigned char new_compass = 0;
 #endif
 
-    bcUartInit();          // Init the back-channel UART
+    bcUartInit();     // Init the back-channel UART, A1
+    a0UartInit();     // Initialize A0 UART
     init_imu();
     //BMP180Calibration();
     if (!BMP085_begin(BMP085_MODE_STANDARD)) {
@@ -256,6 +257,9 @@ main() {
 
 #define PRESSURE_READ_MS 1000
         unsigned long next_pressure_ms = 0;
+        char *p = "this is a test";
+        char myData[10];
+
 
         if (timestamp > next_pressure_ms) {
             next_pressure_ms = timestamp + PRESSURE_READ_MS;
@@ -268,6 +272,8 @@ main() {
             altitude = pressureToAltitude(102317, pressure);
 
             printf("Temp = %f, Pressure = %f, Altitude = %f m, Altitude = %f ft\n", temperature, pressure, altitude,(altitude*3.281));
+            sprintf(myData,"%f %f\n",pressure, altitude);
+            a0UartSend(myData, strlen(myData));
         }
 
     }	// while
