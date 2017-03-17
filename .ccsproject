@@ -11,5 +11,5 @@
 	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
 	<deviceFamily value="MSP430"/>
 	<isTargetManual value="false"/>
-	<origin value="C:/Users/harper/tmp/GNOR"/>
+	<origin value="C:/Users/Carmen Henriquez/Documents/GitHub/GNOR"/>
 </projectOptions>

@@ -8,7 +8,8 @@
 #include "led.h"
 #include "servo.h"
 #include "log.h"
-
+#include "stdio.h"
+unsigned long last_time = 0;     // last time through the loop
 /*
  * boat_loop
  * ----------------------------
@@ -32,7 +33,7 @@ void boat_loop(unsigned long timestamp, double heading) {
     int error = 0;							// error between current heading and target heading
     int rudder = 0;							// calculated rudder angle
     
-    double heading_rate;					// calcuated delta between current and last reading of heading
+    double heading_rate = 0;			    // calcuated delta between current and last reading of heading
 
     //--------------------------------------------------------------------------------
     // pre-start
@@ -42,6 +43,12 @@ void boat_loop(unsigned long timestamp, double heading) {
     // boat is still.  If good, stable rate should be less than .005.
     heading_rate = heading - old_heading;
     old_heading = heading;
+
+    // print heading every .5 seconds
+    if ((timestamp - last_time) > 500) {
+        printf("Heading: %lf, %lf\n", heading, heading_rate);
+        last_time = timestamp;
+    }
     
     // if the heading rate is less than some constant then turn on the Green LED
     if (fabs(heading_rate) < .005)
@@ -65,7 +72,6 @@ void boat_loop(unsigned long timestamp, double heading) {
     if ((abs(calculateDifferenceBetweenAngles(heading, 90)) < 5.0) && (start==0)) {
         start = 1;
         start_time = timestamp;
-        servo2_move_to_angle(130);
     }
 
     // handle orange running LED
@@ -75,7 +81,6 @@ void boat_loop(unsigned long timestamp, double heading) {
         set_sensorhub_led(1);
     else {
         blink_sensorhub_led();
-        servo2_move_to_angle(0);
     }
 
     //--------------------------------------------------------------------------------
@@ -85,12 +90,10 @@ void boat_loop(unsigned long timestamp, double heading) {
         running_time = timestamp - start_time;			// calculate elapsed time
         
         // place timed events here
-        if (running_time < 27000)
-            target = 0;
-        else if ((running_time > 27000) && (running_time < 36000))
-            target = 360-65;
-        else if (running_time > 36000)
-            target = 295-80;
+         if (running_time < 10000)                       // run for 10s straight ahead
+             target = 0;
+         else
+             target = 30;
         
         // PID routine
         // bigger P causes boat to more reaction in if there is heading errors
@@ -102,7 +105,7 @@ void boat_loop(unsigned long timestamp, double heading) {
         if (rudder < -90) rudder = -90;
 
         // set servo angles in response to PID
-        servo1_move_to_angle(90 + rudder);
+        servo2_move_to_angle(90 + rudder);
         
 
         // Log debugging information

@@ -5,7 +5,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.TI MSP430 USB1_0/MSP430" value="${build_artifact:GNOR}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.TI MSP430 USB1_0/MSP430" value="GNOR"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:GNOR}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1_0/MSP430" value="C:/Users\harper\workspace_v6_1\GNOR\Debug\GNOR.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.TI MSP430 USB1_0/MSP430" value="C:/Users\Carmen Henriquez\workspace_v7\GNOR\Debug\GNOR.out"/>
 <mapAttribute key="com.ti.ccstudio.debug.ui.displayFormats">
 <mapEntry key="TI MSP430 USB1_0/MSP430@##separator##@0" value="16-Bit Hex - TI Style"/>
 </mapAttribute>

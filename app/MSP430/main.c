@@ -271,9 +271,9 @@ main() {
             getPressure(&pressure);
             altitude = pressureToAltitude(102317, pressure);
 
-            printf("Temp = %f, Pressure = %f, Altitude = %f m, Altitude = %f ft\n", temperature, pressure, altitude,(altitude*3.281));
-            sprintf(myData,"%f %f\n",pressure, altitude);
-            a0UartSend(myData, strlen(myData));
+            //printf("Temp = %f, Pressure = %f, Altitude = %f m, Altitude = %f ft\n", temperature, pressure, altitude,(altitude*3.281));
+            //sprintf(myData,"%f %f\n",pressure, altitude);
+            //a0UartSend(myData, strlen(myData));
         }
 
     }	// while
