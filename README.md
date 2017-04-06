@@ -13,20 +13,9 @@ The boat kit that we are providing includes the following:
 * 1x Servo Motor
 * 1x Adapter Board
 
-#####Code Composer Studio in the *Cloud* 
-* Go to: https://dev.ti.com/ide and register an account.
-* Accept Terms and start Code Composer Cloud
-* Go to the Git dop down, select clone  a repo and enter "https://github.com/UCFInnovationLab/GNOR"
-* To download repo, click the run button (install webplugins if prompted and update board flash if needed)
-* Next click on target, and select the COM port connection
-* Now, clicking on the serial button at the bottom left should show current heading info
-* The main program loop is located in app/msp430/main.c
-* The heading is being printed by the last lines in main.c and libraries to read buttons, activate LED's, and other functions are located in the other directories.
-* There is also some comented out example code to give you a head start with controling your servo based on the angle
-
 ##### Code Composer *Local*
 * Go to http://www.ti.com/tool/ccstudio and download CCS latest version
-* Install on your device
+* Install on your computer.
 
 
 ##### MSP430f5529 LaunchPad pin descriptions
