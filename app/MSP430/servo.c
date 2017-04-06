@@ -85,15 +85,15 @@ void Timer_A_change_duty_cycle(uint16_t baseAddress,
 
 void servo1_move_to_angle(int angle) {
 
-	int pulse_width;
+    int pulse_width;
 
-	// make sure we are within 0-180 degrees
-	if (angle>180) angle = 180;
-	if (angle<0) angle = 0;
+    // make sure we are within 0-180 degrees
+    if (angle>180) angle = 180;
+    if (angle<0) angle = 0;
 
-	pulse_width = servo_lut[angle];
+    pulse_width = servo_lut[angle];
 
-	Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_1,pulse_width);
+    Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_2,pulse_width);
 }
 
 void servo2_move_to_angle(int angle) {
@@ -106,7 +106,9 @@ void servo2_move_to_angle(int angle) {
 
 	pulse_width = servo_lut[angle];
 
-	Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_2,pulse_width);
+	Timer_A_change_duty_cycle(TIMER_A2_BASE,TIMER_A_CAPTURECOMPARE_REGISTER_1,pulse_width);
 }
+
+
 
 

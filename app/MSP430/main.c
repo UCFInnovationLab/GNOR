@@ -38,6 +38,7 @@
 #include "button.h"
 #include "boat.h"
 #include "BMP180.h"
+#include "uart_a0.h"
 
 #define ACCEL_ON        (0x01)
 #define GYRO_ON         (0x02)
@@ -255,26 +256,26 @@ main() {
             }
         }
 
-#define PRESSURE_READ_MS 1000
-        unsigned long next_pressure_ms = 0;
-        char *p = "this is a test";
-        char myData[10];
-
-
-        if (timestamp > next_pressure_ms) {
-            next_pressure_ms = timestamp + PRESSURE_READ_MS;
-
-            float temperature;
-            float pressure;
-            float altitude;
-            getTemperature(&temperature);
-            getPressure(&pressure);
-            altitude = pressureToAltitude(102317, pressure);
-
-            //printf("Temp = %f, Pressure = %f, Altitude = %f m, Altitude = %f ft\n", temperature, pressure, altitude,(altitude*3.281));
-            //sprintf(myData,"%f %f\n",pressure, altitude);
-            //a0UartSend(myData, strlen(myData));
-        }
+//        #define PRESSURE_READ_MS 1000
+//        unsigned long next_pressure_ms = 0;
+//        char *p = "this is a test";
+//        char myData[10];
+//
+//
+//        if (timestamp > next_pressure_ms) {
+//            next_pressure_ms = timestamp + PRESSURE_READ_MS;
+//
+//            float temperature;
+//            float pressure;
+//            float altitude;
+//            getTemperature(&temperature);
+//            getPressure(&pressure);
+//            altitude = pressureToAltitude(102317, pressure);
+//
+//            //printf("Temp = %f, Pressure = %f, Altitude = %f m, Altitude = %f ft\n", temperature, pressure, altitude,(altitude*3.281));
+//            //sprintf(myData,"%f %f\n",pressure, altitude);
+//            //a0UartSend(myData, strlen(myData));
+//        }
 
     }	// while
 }
