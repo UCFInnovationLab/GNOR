@@ -90,6 +90,7 @@ main() {
     unsigned char new_compass = 0;
 #endif
 
+    pwm_init();
     bcUartInit();     // Init the back-channel UART, A1
     a0UartInit();     // Initialize A0 UART
     init_imu();

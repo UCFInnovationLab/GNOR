@@ -10,6 +10,7 @@
 #include "log.h"
 #include "stdio.h"
 #include "button.h"
+#include "pwm.h"
 
 unsigned long last_time = 0;     // last time through the loop
 /*
@@ -81,10 +82,11 @@ void boat_loop(unsigned long timestamp, double heading) {
     // handle orange running LED
     // blinking: pre-start
     // solid: boat is being controlled by program
-    if (start==1) 
+    if (start==1)  {
         set_sensorhub_led(1);
-    else {
+    } else {
         blink_sensorhub_led();
+        set_pwm_duty_cycle_1(0);
     }
 
     //--------------------------------------------------------------------------------
