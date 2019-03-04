@@ -8,9 +8,8 @@ This repository provides everything needed to get started using these components
 # Common Supplies
 
 ## Brushless Motor Kit
-![alt tag](https://github.com/UCFInnovationLab/GNOR/blob/master/brushless_motor1.png)
-
 https://www.amazon.com/dp/B075ZSDR2T/ref=cm_sw_em_r_mt_dp_U_dckFCbXKBY7DX
+![alt tag](https://github.com/UCFInnovationLab/GNOR/blob/master/brushless_motor1.png)
 
 ##### Boat Kit
 ![alt tag](https://github.com/UCFInnovationLab/GNOR/blob/master/GNOR%20Kit.jpg)
