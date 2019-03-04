@@ -5,7 +5,7 @@ The Great Navel Orange Race (GNOR) is an annual competition held at UCF every ye
 The TI Innovation lab is providing students with TI microcontroller boards (MSP430f5529) and sensors (TI Sensor Hub) for use in their watercrafts. These components empower students to control servos, provide signals for high power relays and ESCs, measure angle change relative to starting angle, look at accelerometer data, and more.
 This repository provides everything needed to get started using these components. This includes example code, pinouts, and more. If you have any questions or are having trouble getting started, you can find help at the UCF Innovation Lab in ENGII room 112 10AM-10PM M-F and Saturday 10-5. 
 
-#####Boat Kit
+##### Boat Kit
 ![alt tag](https://github.com/UCFInnovationLab/GNOR/blob/master/GNOR%20Kit.jpg)
 The boat kit that we are providing includes the following:
 * 1x TI MSP430f5529 Microcontroller Board
