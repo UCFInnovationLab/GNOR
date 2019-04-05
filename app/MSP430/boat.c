@@ -86,6 +86,7 @@ void boat_loop(unsigned long timestamp, double heading) {
         set_sensorhub_led(1);
     } else {
         blink_sensorhub_led();
+        set_pwm_duty_cycle_2(0);
         set_pwm_duty_cycle_1(0);
     }
 
@@ -119,6 +120,8 @@ void boat_loop(unsigned long timestamp, double heading) {
         // %f: float
         // %d: integer
         //MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
+        set_pwm_duty_cycle_2(400);
+        set_pwm_duty_cycle_1(400);
       
     }
 

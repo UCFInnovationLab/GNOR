@@ -28,15 +28,31 @@ void pwm_init(void)
       GPIO_PIN5
     );
 
+    //P1.4 as PWM output
+    GPIO_setAsPeripheralModuleFunctionOutputPin(
+      GPIO_PORT_P1,
+      GPIO_PIN4
+    );
+
     //Generate PWM - Timer runs in Up mode
-    Timer_A_outputPWMParam tparam = {0};
-    tparam.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
-    tparam.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
-    tparam.timerPeriod = TIMER_PERIOD;
-    tparam.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_4;
-    tparam.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
-    tparam.dutyCycle = DUTY_CYCLE;
-    Timer_A_outputPWM(TIMER_A0_BASE, &tparam);
+    Timer_A_outputPWMParam tparam1 = {0};
+    tparam1.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
+    tparam1.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+    tparam1.timerPeriod = TIMER_PERIOD;
+    tparam1.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_4;
+    tparam1.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
+    tparam1.dutyCycle = DUTY_CYCLE;
+    Timer_A_outputPWM(TIMER_A0_BASE, &tparam1);
+
+    //Generate PWM - Timer runs in Up mode
+    Timer_A_outputPWMParam tparam2 = {0};
+    tparam2.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
+    tparam2.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+    tparam2.timerPeriod = TIMER_PERIOD;
+    tparam2.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_3;
+    tparam2.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
+    tparam2.dutyCycle = DUTY_CYCLE;
+    Timer_A_outputPWM(TIMER_A0_BASE, &tparam2);
 }
 
 // Set PWM duty cycle.
@@ -44,5 +60,12 @@ void pwm_init(void)
 //
 void set_pwm_duty_cycle_1(uint16_t duty) {
     HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_4 + OFS_TAxR) = duty;
+}
+
+// Set PWM duty cycle.
+// duty: max value 512
+//
+void set_pwm_duty_cycle_2(uint16_t duty) {
+    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_3 + OFS_TAxR) = duty;
 }
 
