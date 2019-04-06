@@ -15,7 +15,7 @@
 #include "pwm.h"
 #include "driverlib.h"
 
-#define TIMER_PERIOD 511
+#define TIMER_PERIOD 15000
 #define DUTY_CYCLE  1
 
 // P1.4 (TA0.3)
@@ -37,7 +37,7 @@ void pwm_init(void)
     //Generate PWM - Timer runs in Up mode
     Timer_A_outputPWMParam tparam1 = {0};
     tparam1.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
-    tparam1.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+    tparam1.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_8;
     tparam1.timerPeriod = TIMER_PERIOD;
     tparam1.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_4;
     tparam1.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
@@ -47,7 +47,7 @@ void pwm_init(void)
     //Generate PWM - Timer runs in Up mode
     Timer_A_outputPWMParam tparam2 = {0};
     tparam2.clockSource = TIMER_A_CLOCKSOURCE_SMCLK;
-    tparam2.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
+    tparam2.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_8;
     tparam2.timerPeriod = TIMER_PERIOD;
     tparam2.compareRegister = TIMER_A_CAPTURECOMPARE_REGISTER_3;
     tparam2.compareOutputMode = TIMER_A_OUTPUTMODE_RESET_SET;
@@ -58,14 +58,28 @@ void pwm_init(void)
 // Set PWM duty cycle.
 // duty: max value 512
 //
-void set_pwm_duty_cycle_1(uint16_t duty) {
-    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_4 + OFS_TAxR) = duty;
+void set_pwm_duty_cycle_1(double duty) {
+    uint16_t duty_int;
+
+    if (duty < 0.0) duty = 0.0;
+    else if (duty > 1.0) duty = 1.0;
+
+    duty_int = duty * TIMER_PERIOD;
+
+    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_4 + OFS_TAxR) = duty_int;
 }
 
 // Set PWM duty cycle.
 // duty: max value 512
 //
-void set_pwm_duty_cycle_2(uint16_t duty) {
-    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_3 + OFS_TAxR) = duty;
+void set_pwm_duty_cycle_2(double duty) {
+    uint16_t duty_int;
+
+    if (duty < 0.0) duty = 0.0;
+    else if (duty > 1.0) duty = 1.0;
+
+    duty_int = duty * TIMER_PERIOD;
+
+    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_3 + OFS_TAxR) = duty_int;
 }
 
