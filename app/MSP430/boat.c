@@ -139,8 +139,10 @@ void boat_loop(unsigned long timestamp, double heading) {
         // %lf: double
         // %f: float
         // %d: integer
-        //MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate);
-        set_pwm_duty_cycle_2(400);
+        //MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate)
+
+        //set_pwm_duty_cycle_1(rudder/90.0);
+        //set_pwm_duty_cycle_2(rudder/90.0);
       
     }
 

@@ -66,8 +66,9 @@ void set_pwm_duty_cycle_1(double duty) {
 
     duty_int = duty * TIMER_PERIOD;
 
-    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_4 + OFS_TAxR) = duty_int;
+    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_3 + OFS_TAxR) = duty_int;
 }
+
 
 // Set PWM duty cycle.
 // duty: max value 512
@@ -80,6 +81,8 @@ void set_pwm_duty_cycle_2(double duty) {
 
     duty_int = duty * TIMER_PERIOD;
 
-    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_3 + OFS_TAxR) = duty_int;
+    HWREG16(TIMER_A0_BASE + TIMER_A_CAPTURECOMPARE_REGISTER_4 + OFS_TAxR) = duty_int;
 }
+
+
 
