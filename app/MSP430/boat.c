@@ -45,7 +45,11 @@ void boat_loop(unsigned long timestamp, double heading) {
 
     // Run one time initialization routines.
     if (first_time ==1) {
+        servo1_move_to_angle(90);
         servo2_move_to_angle(0);  // Start motor a zero speed. range 0-180
+        set_pwm_duty_cycle_1(0.0);
+        set_pwm_duty_cycle_2(0.0);
+        first_time = 0;
     }
 
     // calculate heading turn rate.  this can be used to give a measure of how fast the boat's heading is drifting when the
@@ -65,10 +69,14 @@ void boat_loop(unsigned long timestamp, double heading) {
     else
         set_led2(0);
 
-    // Reset heading if button 1 is pressed
+    // Restart when button 1 is pressed
+    // - reset heading
+    // - reset start
+    // - reset first_time
     if (launchpad_button_1_pressed() == 1) {
         heading_zero = heading;
         start=0;
+        first_time=1;
     }
     
     // Calculate the corrected heading taking into account the heading_zero value
@@ -86,6 +94,9 @@ void boat_loop(unsigned long timestamp, double heading) {
 
         // Start motor controller connected to the servo2 port
         servo2_move_to_angle(90);  // range 0-180
+
+        //set_pwm_duty_cycle_1(0.5);
+        //set_pwm_duty_cycle_2(0.2);
     }
 
     // handle orange "running LED"

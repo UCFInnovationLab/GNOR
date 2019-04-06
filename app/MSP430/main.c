@@ -65,7 +65,7 @@ enum OSS {  // BMP-085 sampling rate
 // Specify sensor parameters
 uint8_t OSS = OSS_3;           // maximum pressure resolution
 
-// These are constants used to calulate the temperature and pressure from the BMP-085 sensor
+// These are constants used to calculate the temperature and pressure from the BMP-085 sensor
 int16_t ac1, ac2, ac3, b1, b2, mb, mc, md, b5;
 uint16_t ac4, ac5, ac6;
 float temperature, pressure, temppress, altitude;
@@ -82,6 +82,29 @@ long BMP180GetPressure();
 
 long up = 0;
 
+/* Set up MSP430 peripherals. */
+//
+// P1.0 - LED1 LaunchPad (GND reference)
+// P1.1 - Button2 LaunchPad (GND - no pullup)
+// P1.2 - Timer Capture (TA0.1)
+// P1.3 - Timer Capture (TA0.2)
+// P1.4 - PWM Out (Timer TA0.3)
+// P1.5 - PWM Out (Timer TA0.4)
+// P2.0 - 9150 Int_Motion
+// P2.1 - Button1 LaunchPad (GND - no pullup)
+// P2.4 - PWM Out (Timer TA2.1)
+// P2.5 - PWM Out (Timer TA2.2)
+// P3.0 - i2c SDA
+// P3.1 - i2c SCL
+// P3.3 - UART UCA0_TXD
+// P3.4 - UART UCA0_RXD
+// P4.4 - UART UCA1_TXD (connected to Application USB COM port through emulator)
+// P4.5 - UART UCA1_RXD (connected to Application USB COM port through emulator)
+// P4.7 - LED2 LaunchPad (GND reference)
+// P6.2 - LED SensorHub (GND reference)
+// P6.3 - Push Button SensorHub 1 (GND - 10k pullup)
+// P6.4 - Push Button SensorHub 2 (GND - 10k pullup)
+//
 
 
 main() {
@@ -92,9 +115,21 @@ main() {
     unsigned char new_compass = 0;
 #endif
 
+
+    led_init();
+    button_init();
+    servo_init();
     pwm_init();
     bcUartInit();     // Init the back-channel UART, A1
     a0UartInit();     // Initialize A0 UART
+
+    WDTCTL = WDTPW | WDTHOLD;
+    SetVCore(2);
+    msp430_clock_init(12000000L, 2);
+    //msp430_reset();
+    msp430_i2c_enable();
+    msp430_int_init();
+
     init_imu();
     //BMP180Calibration();
     if (!BMP085_begin(BMP085_MODE_STANDARD)) {
@@ -144,8 +179,8 @@ main() {
             /* Put the MSP430 to sleep until a timer interrupt or data ready
              * interrupt is detected.
              */
-            __bis_SR_register(LPM0_bits + GIE);
-            continue;
+            //__bis_SR_register(LPM0_bits + GIE);
+            //continue;
         }
 
         if (hal.new_gyro && hal.dmp_on) {

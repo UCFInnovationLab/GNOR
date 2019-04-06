@@ -301,45 +301,7 @@ void run_self_test(void)
 
 
 
-/* Set up MSP430 peripherals. */
-//
-// P1.0 - LED1 LaunchPad (GND reference)
-// P1.1 - Button2 LaunchPad (GND - no pullup)
-// P1.2 - Timer Capture (TA0.1)
-// P1.3 - Timer Capture (TA0.2)
-// P1.4 - PWM Out (Timer TA0.3)
-// P1.5 - PWM Out (Timer TA0.4)
-// P2.0 - 9150 Int_Motion
-// P2.1 - Button1 LaunchPad (GND - no pullup)
-// P2.4 - PWM Out (Timer TA2.1)
-// P2.5 - PWM Out (Timer TA2.2)
-// P3.0 - i2c SDA
-// P3.1 - i2c SCL
-// P3.3 - UART UCA0_TXD
-// P3.4 - UART UCA0_RXD
-// P4.4 - UART UCA1_TXD (connected to Application USB COM port through emulator)
-// P4.5 - UART UCA1_RXD (connected to Application USB COM port through emulator)
-// P4.7 - LED2 LaunchPad (GND reference)
-// P6.2 - LED SensorHub (GND reference)
-// P6.3 - Push Button SensorHub 1 (GND - 10k pullup)
-// P6.4 - Push Button SensorHub 2 (GND - 10k pullup)
-//
-static inline void platform_init(void)
-{
-	WDTCTL = WDTPW | WDTHOLD;
-    SetVCore(2);
-    msp430_clock_init(12000000L, 2);
-    //msp430_reset();
-    msp430_i2c_enable();
-    msp430_int_init();
 
-    led_init();
-    button_init();
-    servo_init();
-
-
-
-}
 
 void init_imu(void)
 {
@@ -352,9 +314,6 @@ void init_imu(void)
 #ifdef COMPASS_ENABLED
     unsigned short compass_fsr;
 #endif
-
-    /* Set up MSP430 hardware. */
-    platform_init();
 
     /* Set up gyro.
      * Every function preceded by mpu_ is a driver function and can be found
@@ -415,7 +374,7 @@ void init_imu(void)
 
 //    I think inv_got_compass_bias() in results_holder.c will tell you when the compass bias has been established. My guess is that if you have set 9-axis fusion enabled, then as soon as the compass bias has been established, the MPL will switch to 9-axis fusion.
 //
-//    I am not sure if “heading from gyro” gives 9-axis fusion before the compass is calibrated. 9-axis fusion is adding compass readings to the fusion to add a drift free reading into the mix. No compass, no drift free element.
+//    I am not sure if ï¿½heading from gyroï¿½ gives 9-axis fusion before the compass is calibrated. 9-axis fusion is adding compass readings to the fusion to add a drift free reading into the mix. No compass, no drift free element.
 
 //    Thanks for your response. I tried using inv_got_compass_bias(), but it always stays equal to zero, no matter how many figure-eights I do. I have called the following to enable 9-axis fusion and compass calibration:
 //    inv_enable_quaternion();
@@ -423,7 +382,7 @@ void init_imu(void)
 //    inv_enable_vector_compass_cal();
 //    inv_enable_magnetic_disturbance();
 
-//    I’m back to looking into this issue of how to determine if the magnetometer is calibrated. I tried inv_got_compass_bias() and inv_get_compass_state() both functions always report zero, before or after some figure-eights.
+//    Iï¿½m back to looking into this issue of how to determine if the magnetometer is calibrated. I tried inv_got_compass_bias() and inv_get_compass_state() both functions always report zero, before or after some figure-eights.
 
     /* Update gyro biases when not in motion.
      * WARNING: These algorithms are mutually exclusive.
