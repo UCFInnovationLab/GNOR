@@ -13,6 +13,9 @@ void button_init()
 
     GPIO_setAsInputPin(GPIO_PORT_P6, GPIO_PIN3);		// SernorHub push button 1
     GPIO_setAsInputPin(GPIO_PORT_P6, GPIO_PIN4);		// SernorHub push button 2
+
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6, GPIO_PIN0);  // TI Button RV1
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6, GPIO_PIN1);  // TI Button RV2
 }
 
 int launchpad_button_1_pressed()
@@ -46,5 +49,18 @@ int sensorhub_button_2_pressed()
 	else
 		return 0;
 }
+int ti_button_1_pressed()
+{
+    if (GPIO_getInputPinValue(GPIO_PORT_P6, GPIO_PIN0) == GPIO_INPUT_PIN_LOW)
+        return 1;
+    else
+        return 0;
+}
 
-
+int ti_button_2_pressed()
+{
+    if (GPIO_getInputPinValue(GPIO_PORT_P6, GPIO_PIN1) == GPIO_INPUT_PIN_LOW)
+        return 1;
+    else
+        return 0;
+}
