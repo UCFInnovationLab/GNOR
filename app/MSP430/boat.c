@@ -13,6 +13,10 @@
 #include "pwm.h"
 
 unsigned long last_time = 0;     // last time through the loop
+
+#define P 2.0
+#define MOTOR_BASE_SPEED 90
+
 /*
  * boat_loop
  * ----------------------------
@@ -31,11 +35,10 @@ void boat_loop(unsigned long timestamp, double heading) {
     
     unsigned long running_time;				// elapsed time since the mission started
     
-    double P = 2.0;							// P constant from the PID algorithm
-    //double I = 0.01;						    // I constant from the PID algorithm
     int target = 0;							// Current heading target that the boat should seek
     int error = 0;							// error between current heading and target heading
     int rudder = 0;							// calculated rudder angle
+    int diff = 0;                           // diff for dual motor drive
     
     double heading_rate;			            // Calculated delta between current and last reading of heading
 
@@ -45,10 +48,23 @@ void boat_loop(unsigned long timestamp, double heading) {
 
     // Run one time initialization routines.
     if (first_time ==1) {
-        servo1_move_to_angle(90);
-        servo2_move_to_angle(0);  // Start motor a zero speed. range 0-180
-        set_pwm_duty_cycle_1(0.0);
-        set_pwm_duty_cycle_2(0.0);
+        //--------------------------------------------------
+        // Rudder & Brushless motor
+        // Servo1: Rudder, Servo2: speed controller
+        //--------------------------------------------------
+        servo1_move_to_angle(90);   // set rudder straight = 90 degrees
+        servo2_move_to_angle(0);    // start motor a zero speed. range 0-180
+        //--------------------------------------------------
+        // Dual brushless motors
+        // Servo1: left motor, Servo2: right motor
+        //--------------------------------------------------
+            // servo1_move_to_angle(0);    // start left motor a zero speed. range 0-180
+            // servo2_move_to_angle(0);    // start right motor a zero speed. range 0-180
+        //--------------------------------------------------
+        // Dual brush motors
+        //--------------------------------------------------
+            // set_pwm_duty_cycle_1(0.0);
+            // set_pwm_duty_cycle_2(0.0);
         first_time = 0;
     }
 
@@ -86,17 +102,32 @@ void boat_loop(unsigned long timestamp, double heading) {
     else if (heading < 0.0)
         heading = heading + 360;
 
-    // check for boat start.
+    // check for boat start.  (currently rotate boat 90 degrees
     if (((calculateDifferenceBetweenAngles(heading, 90)) > 0.0) && (start==0)) {
         start = 1;
         start_time = timestamp;
         printf("Started\n");
 
-        // Start motor controller connected to the servo2 port
-        servo2_move_to_angle(90);  // range 0-180
+        //
+        // Start the boat's motor(s)
+        //
 
-        //set_pwm_duty_cycle_1(0.5);
-        //set_pwm_duty_cycle_2(0.2);
+        //--------------------------------------------------
+        // Rudder & Brushless motor
+        // Servo1: Rudder, Servo2: speed controller
+        //--------------------------------------------------
+        servo2_move_to_angle(MOTOR_BASE_SPEED);    // start motor. range 0-180
+        //--------------------------------------------------
+        // Dual brushless motors
+        // Servo1: left motor, Servo2: right motor
+        //--------------------------------------------------
+            // servo1_move_to_angle(MOTOR_BASE_SPEED);    // start left motor at base speed. range 0-180
+            // servo2_move_to_angle(MOTOR_BASE_SPEED);    // start right motor at base speed. range 0-180
+        //--------------------------------------------------
+        // Dual brush motors
+        //--------------------------------------------------
+            // set_pwm_duty_cycle_1(0.5);
+            // set_pwm_duty_cycle_2(0.5);
     }
 
     // handle orange "running LED"
@@ -125,25 +156,30 @@ void boat_loop(unsigned long timestamp, double heading) {
         // PID routine
         // bigger P causes boat to have more reaction to heading errors
         error = calculateDifferenceBetweenAngles(heading, target);
-        rudder = P * error;
 
+
+        //--------------------------------------------------
+        // Rudder & Brushless motor
+        // Servo1: Rudder, Servo2: speed controller
+        //--------------------------------------------------
+        rudder = P * error;
         // set limits on rudder movement
         if (rudder > 90) rudder  = 90;
         if (rudder < -90) rudder = -90;
-
         // set servo angles in response to PID
         servo1_move_to_angle(90 + rudder);              // if rudder is reversed, change + to -
-        
-
-        // Log debugging information
-        // %lf: double
-        // %f: float
-        // %d: integer
-        //MPL_LOGE("Heading: %lf, %lf\n", heading, heading_rate)
-
-        //set_pwm_duty_cycle_1(rudder/90.0);
-        //set_pwm_duty_cycle_2(rudder/90.0);
-      
+        //--------------------------------------------------
+        // Dual brushless motors
+        // Servo1: left motor, Servo2: right motor
+        //--------------------------------------------------
+            // diff = P * error;
+            // servo1_move_to_angle(MOTOR_BASE_SPEED + diff);
+            // servo2_move_to_angle(MOTOR_BASE_SPEED + diff);
+        //--------------------------------------------------
+        // Dual brush motors
+        //--------------------------------------------------
+            //set_pwm_duty_cycle_1(diff);
+            //set_pwm_duty_cycle_2(diff);
     }
 
     // Turn on LED if heading +- 5 degrees of the target
