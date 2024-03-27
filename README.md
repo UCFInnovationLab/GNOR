@@ -45,3 +45,5 @@ The boat kit that we are providing includes the following:
 * P6.2 - LED SensorHub (GND reference)
 * P6.3 - Push Button SensorHub 1 (GND - 10k pullup)
 * P6.4 - Push Button SensorHub 2 (GND - 10k pullup)
+
+* 
