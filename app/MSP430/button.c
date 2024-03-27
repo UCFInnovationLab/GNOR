@@ -16,6 +16,8 @@ void button_init()
 
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6, GPIO_PIN0);  // TI Button RV1
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P6, GPIO_PIN1);  // TI Button RV2
+
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P2, GPIO_PIN6);  // Green Board Button
 }
 
 int launchpad_button_1_pressed()
@@ -60,6 +62,14 @@ int ti_button_1_pressed()
 int ti_button_2_pressed()
 {
     if (GPIO_getInputPinValue(GPIO_PORT_P6, GPIO_PIN1) == GPIO_INPUT_PIN_LOW)
+        return 1;
+    else
+        return 0;
+}
+
+int green_board_button_pressed()
+{
+    if (GPIO_getInputPinValue(GPIO_PORT_P2, GPIO_PIN6) == GPIO_INPUT_PIN_LOW)
         return 1;
     else
         return 0;

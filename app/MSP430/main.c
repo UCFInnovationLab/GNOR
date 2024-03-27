@@ -37,7 +37,7 @@
 #include "led.h"
 #include "button.h"
 #include "boat.h"
-#include "BMP180.h"
+//#include "BMP180.h"
 #include "uart_a0.h"
 
 #define ACCEL_ON        (0x01)
@@ -47,13 +47,13 @@
 #define TEMP_READ_MS    (500)
 #define COMPASS_READ_MS (100)
 
-#define BMP180_ADDRESS   0x77
-#define BMP180_WHO_AM_I  0xD0  // WHO_AM_I id of BMP180, should return 0x55
-#define BMP180_RESET     0xE0
-#define BMP180_CONTROL   0xF4
-#define BMP180_OUT_MSB   0xF6
-#define BMP180_OUT_LSB   0xF7
-#define BMP180_OUT_XLSB  0xF8
+//#define BMP180_ADDRESS   0x77
+//#define BMP180_WHO_AM_I  0xD0  // WHO_AM_I id of BMP180, should return 0x55
+//#define BMP180_RESET     0xE0
+//#define BMP180_CONTROL   0xF4
+//#define BMP180_OUT_MSB   0xF6
+//#define BMP180_OUT_LSB   0xF7
+//#define BMP180_OUT_XLSB  0xF8
 
 enum OSS {  // BMP-085 sampling rate
   OSS_0 = 0,  // 4.5 ms conversion time
@@ -132,17 +132,17 @@ main() {
 
     init_imu();
     //BMP180Calibration();
-    if (!BMP085_begin(BMP085_MODE_STANDARD)) {
-    	printf("BMP085 Begin Error\n");
-    }
+//    if (!BMP085_begin(BMP085_MODE_STANDARD)) {
+//    	printf("BMP085 Begin Error\n");
+//    }
 
     msp430_get_clock_ms(&timestamp);
 
     //array for data
     unsigned char arr[1];
     int val;
-    val=msp430_i2c_read(0x77,0xD0,1,arr);
-    printf("Read from i2c 0x77, register 0xD0. return = %d register = %x\n",val,arr[0]);
+//    val=msp430_i2c_read(0x77,0xD0,1,arr);
+//    printf("Read from i2c 0x77, register 0xD0. return = %d register = %x\n",val,arr[0]);
 
     MPL_LOGE("Starting Program.\n");
     

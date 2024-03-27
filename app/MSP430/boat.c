@@ -89,7 +89,7 @@ void boat_loop(unsigned long timestamp, double heading) {
     // - reset heading
     // - reset start
     // - reset first_time
-    if (launchpad_button_1_pressed() == 1) {
+    if ((launchpad_button_1_pressed() == 1) || (green_board_button_pressed()== 1)) {
         heading_zero = heading;
         start=0;
         first_time=1;
