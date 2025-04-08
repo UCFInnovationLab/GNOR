@@ -154,6 +154,12 @@ main() {
         msp430_get_clock_ms(&timestamp);
         //printf("The time is now %d\n", timestamp);
 
+        if (timestamp > hal.next_compass_ms) {
+            hal.next_compass_ms = timestamp + COMPASS_READ_MS;
+            hal.new_gyro = 1;
+        }
+
+
 #ifdef COMPASS_ENABLED
         /* We're not using a data ready interrupt for the compass, so we'll
          * make our compass reads timer-based instead.

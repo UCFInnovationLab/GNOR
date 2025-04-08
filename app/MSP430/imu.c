@@ -320,7 +320,7 @@ void init_imu(void)
      * in inv_mpu.h.
      */
     int_param.cb = gyro_data_ready_cb;
-    int_param.pin = INT_PIN_P20;
+    int_param.pin = INT_PIN_P27;
     int_param.lp_exit = INT_EXIT_LPM0;
     int_param.active_low = 1;
     result = mpu_init(&int_param);
@@ -342,20 +342,20 @@ void init_imu(void)
 
     // Check for selftest
 	//
-	int i;
-	if (sensorhub_button_1_pressed()) {
-		for (i=0;i<5;i++) {
-			msp430_delay_ms(800);
-			set_sensorhub_led(1);
-			msp430_delay_ms(200);
-			set_sensorhub_led(0);
-		}
-
-		set_sensorhub_led(1);
-		run_self_test();
-		save_calibration_data_to_flash();
-		set_sensorhub_led(0);
-	}
+//	int i;
+//	if (sensorhub_button_1_pressed()) {
+//		for (i=0;i<5;i++) {
+//			msp430_delay_ms(800);
+//			set_sensorhub_led(1);
+//			msp430_delay_ms(200);
+//			set_sensorhub_led(0);
+//		}
+//
+//		set_sensorhub_led(1);
+//		run_self_test();
+//		save_calibration_data_to_flash();
+//		set_sensorhub_led(0);
+//	}
 
     /* Compute 6-axis and 9-axis quaternions. */
     inv_enable_quaternion();
