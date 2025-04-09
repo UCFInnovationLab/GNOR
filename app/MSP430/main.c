@@ -119,7 +119,7 @@ main() {
     led_init();
     button_init();
     servo_init();
-    pwm_init();
+    //pwm_init();
     bcUartInit();     // Init the back-channel UART, A1
     a0UartInit();     // Initialize A0 UART
 
