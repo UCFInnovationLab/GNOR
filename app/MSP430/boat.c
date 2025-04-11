@@ -32,7 +32,7 @@ void boat_loop(unsigned long timestamp, double heading) {
     static int start=-1;					// has the boat started, -1=not ready, 0=ready, 1=started
     static double heading_zero;				// heading offset.  Used to zero heading when button is pressed
     static int first_time=1;                // flag to run one time routines
-    
+    static int calibrate_time=1;            // Should we calibrate
     unsigned long running_time;				// elapsed time since the mission started
     
     int target = 0;							// Current heading target that the boat should seek
@@ -46,6 +46,19 @@ void boat_loop(unsigned long timestamp, double heading) {
     // pre-start
     //--------------------------------------------------------------------------------
 
+    if (calibrate_time == 1) {
+        if (launchpad_button_2_pressed() == 1) {
+            servo2_move_to_angle(180);
+        }
+
+        while (launchpad_button_2_pressed() == 1)  {
+
+        }
+
+        servo2_move_to_angle(0);
+
+        calibrate_time =0;
+    }
     // Run one time initialization routines.
     if (first_time ==1) {
         //--------------------------------------------------
